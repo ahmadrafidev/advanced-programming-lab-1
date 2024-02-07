@@ -21,7 +21,12 @@ public class ProductRepository {
     } 
 
     public void deleteById(String productId) {
-        productData.removeIf(product -> productId.equals(product.getProductId()));
-    }
+        try {
+            int id = Integer.parseInt(productId);
+            productData.removeIf(product -> product.getProductId() == id);
+        } catch (NumberFormatException e) {
+            System.err.println("Error parsing productId: " + productId);
+        }
+    }    
     
 }

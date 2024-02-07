@@ -37,9 +37,11 @@ public class ProductController {
     }
 
     @PostMapping("/delete")
-    public String deleteProduct(@RequestParam("productId") String productId) {
-        service.deleteProduct(productId); 
+    public String deleteProduct(@RequestParam("productId") String productIdStr) {
+        int productId = Integer.parseInt(productIdStr); // Convert to int if necessary.
+        service.deleteProduct(Integer.toString(productId)); // Convert back to String if your service expects a String.
         return "redirect:list";
     }
+
 
 }
