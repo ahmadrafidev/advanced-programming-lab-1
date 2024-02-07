@@ -28,5 +28,25 @@ public class ProductRepository {
             System.err.println("Error parsing productId: " + productId);
         }
     }    
+
+    public void update(Product updatedProduct) {
+        for (int i = 0; i < productData.size(); i++) {
+            Product product = productData.get(i);
+            if (product.getProductId() == updatedProduct.getProductId()) {
+                productData.set(i, updatedProduct);
+                break; // Exit the loop once the product is found and updated
+            }
+        }
+    }
+
+    public Product findById(int productId) {
+        for (Product product : productData) {
+            if (product.getProductId() == productId) {
+                return product; 
+            }
+        }
+        return null; 
+    }    
+    
     
 }
