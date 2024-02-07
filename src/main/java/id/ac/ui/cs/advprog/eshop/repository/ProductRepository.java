@@ -1,8 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
-import org.springframework.stereotype.Repository;
 import id.ac.ui.cs.advprog.eshop.model.Product;
-
+import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,6 +27,13 @@ public class ProductRepository {
             System.err.println("Error parsing productId: " + productId);
         }
     }    
+
+    public void deleteById(int productId) {
+        boolean removed = productData.removeIf(product -> product.getProductId() == productId);
+        if (!removed) {
+            System.err.println("No product found with ID: " + productId + " to delete.");
+        }
+    }   
 
     public void update(Product updatedProduct) {
         for (int i = 0; i < productData.size(); i++) {
