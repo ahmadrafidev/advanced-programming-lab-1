@@ -18,5 +18,15 @@ public class ProductRepository {
 
     public Iterator<Product> findAll(){
         return productData.iterator();
-    }
+    } 
+
+    public void deleteById(String productId) {
+        try {
+            int id = Integer.parseInt(productId);
+            productData.removeIf(product -> product.getProductId() == id);
+        } catch (NumberFormatException e) {
+            System.err.println("Error parsing productId: " + productId);
+        }
+    }    
+    
 }
