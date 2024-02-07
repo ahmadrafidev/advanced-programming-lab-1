@@ -1,5 +1,5 @@
 ## Refleksi menggunakan Spring Boot pada Tutorial 1
-Selama pengembangan dua fitur baru dalam aplikasi Spring Boot saya, saya berusaha menerapkan berbagai prinsip clean code dan secure coding yang telah saya pelajari. Berikut ini adalah beberapa poin penting terkait penerapan yang saya pakai:
+Selama pengembangan fitur  dalam aplikasi Spring Boot ini, saya berusaha menerapkan berbagai prinsip clean code dan secure coding yang telah saya pelajari. Berikut ini adalah beberapa poin penting terkait penerapan yang saya pakai:
 
 ## Clean Code:
 - Konsistensi Penamaan: Saya menggunakan konvensi penamaan yang konsisten untuk metode, variabel, class, dan interface yang membuat kode lebih mudah dibaca dan dipahami.
