@@ -82,17 +82,17 @@ class CarController extends ProductController{
         return "redirect:listCar";
     }
 
-    @GetMapping("/ListCar")
+    @GetMapping("/listCar")
     public String carListPage(Model model){
         List<Car> allCars = carservice.findAll();
-        model. addAttribute("cars", allCars);
+        model.addAttribute("cars", allCars);
         return "carList";
     }
 
     @GetMapping("/editCar/{carId}")
     public String editCarPage(@PathVariable String carId, Model model) {
         Car car = carservice.findById(carId);
-        model. addAttribute ("car", car);
+        model.addAttribute ("car", car);
         return "editCar";
     }
 
