@@ -1,5 +1,4 @@
 package id.ac.ui.cs.advprog.eshop.controller;
-
 import id.ac.ui.cs.advprog.eshop.model.Car;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.service.CarServiceImpl;
@@ -10,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+/**
+ * Product Controller
+ */
 @Controller
 @RequestMapping("/product")
 public class ProductController {
@@ -63,6 +65,9 @@ public class ProductController {
 
 }
 
+/**
+ * Car Controller
+ */
 @Controller
 @RequestMapping("/car")
 class CarController extends ProductController{
