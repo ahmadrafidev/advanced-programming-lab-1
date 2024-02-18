@@ -7,11 +7,16 @@ import java.util.UUID;
 
 @Repository
 public class CarRepositoryImpl implements CarRepository {
-    private List<Car> carData = new ArrayList<>();
+    private final List<Car> carData = new ArrayList<>();
 
     @Override
-    public Car create(Car car){ 
-        if(car.getCarId() == null){
+    public Car create(Car car) { 
+        if (car == null) {
+            // Simple check for null input
+            throw new IllegalArgumentException("Cannot create a null car.");
+        }
+        // Ensure the car has a unique ID
+        if (car.getCarId() == null || car.getCarId().trim().isEmpty()) {
             car.setCarId(UUID.randomUUID().toString());
         }
         carData.add(car);
@@ -19,35 +24,47 @@ public class CarRepositoryImpl implements CarRepository {
     }
 
     @Override
-    public List<Car> findAll(){
-        return new ArrayList<>(carData);
+    public List<Car> findAll() {
+        return new ArrayList<>(carData); 
     }
 
     @Override
     public Car findById(String id) {
+        if (id == null || id.trim().isEmpty()) {
+            // Simple check for invalid ID
+            throw new IllegalArgumentException("Car ID must not be null or empty.");
+        }
         for (Car car : carData) {
-            if (car.getCarId().equals(id)) {
+            if (id.equals(car.getCarId())) {
                 return car;
             }
         }
-        return null;
+        return null; 
     }
 
     @Override
     public Car update(String id, Car updatedCar) { 
+        if (id == null || id.trim().isEmpty() || updatedCar == null) {
+            // Check for invalid ID or car
+            throw new IllegalArgumentException("Car ID and Car must not be null or empty.");
+        }
         for (Car car : carData) {
-            if (car.getCarId().equals(id)) {
+            if (id.equals(car.getCarId())) {
                 car.setCarName(updatedCar.getCarName());
                 car.setCarColor(updatedCar.getCarColor());
                 car.setCarQuantity(updatedCar.getCarQuantity());
                 return car;
             }
         }
-        return null;
+        return null; 
     }
     
     @Override
     public void delete(String id) { 
-        carData.removeIf(car -> car.getCarId().equals(id)); 
+        if (id == null || id.trim().isEmpty()) {
+            // Simple check for invalid ID
+            throw new IllegalArgumentException("Car ID must not be null or empty.");
+        }
+        carData.removeIf(car -> id.equals(car.getCarId())); 
     }
 }
