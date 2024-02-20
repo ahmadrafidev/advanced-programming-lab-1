@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/car")
-class CarController extends ProductController{
+class CarController{
 
     private static final String REDIRECT_LIST_CAR = "redirect:listCar";
 
