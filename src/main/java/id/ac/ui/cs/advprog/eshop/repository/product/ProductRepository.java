@@ -1,4 +1,4 @@
-package id.ac.ui.cs.advprog.eshop.repository;
+package id.ac.ui.cs.advprog.eshop.repository.product;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import java.util.List;
 
