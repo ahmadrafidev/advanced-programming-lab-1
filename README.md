@@ -30,7 +30,6 @@ Proses implementasi Tutorial 1 ini  sangat berharga bagi saya dalam hal pengemba
 
 - Single Responsibility Principle (SRP): Setiap kelas memiliki satu tanggung jawab. Contohnya, ProductController hanya mengelola permintaan HTTP, ProductService mengelola logika bisnis, dan ProductRepository bertanggung jawab atas akses data.
 - Open/Closed Principle (OCP): Kelas dibuat terbuka untuk ekstensi tapi tertutup untuk modifikasi. Implementasi interface ProductRepository memungkinkan penggantian atau penambahan fungsionalitas tanpa mengubah kode yang ada.
-- Liskov Substitution Principle (LSP): Prinsip ini kurang relevan karena tidak ada hierarki warisan yang jelas pada kode yang diberikan. Namun, prinsip ini mengingatkan untuk memastikan bahwa subclass yang menggantikan superclass tidak merusak fungsionalitas yang ada.
 - Interface Segregation Principle (ISP): ProductService menunjukkan contoh ISP dengan menyediakan antarmuka yang spesifik untuk kebutuhan yang berbeda tanpa memaksa kelas untuk mengimplementasikan metode yang tidak mereka gunakan.
 - Dependency Inversion Principle (DIP): Prinsip ini diterapkan melalui penggunaan interface ProductRepository, yang mengurangi ketergantungan langsung antara ProductServiceImpl dan implementasi repositori konkret.
 
