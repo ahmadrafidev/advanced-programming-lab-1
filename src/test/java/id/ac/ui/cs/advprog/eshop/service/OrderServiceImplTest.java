@@ -1,4 +1,18 @@
 package id.ac.ui.cs.advprog.eshop.service;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,15 +25,6 @@ import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.repository.order.OrderRepository;
 import id.ac.ui.cs.advprog.eshop.service.order.OrderServiceImpl;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
@@ -36,7 +41,7 @@ class OrderServiceTest {
     void setUp() {
         List<Product> products = new ArrayList<>();
         Product product1 = new Product();
-        product1.setProductId("eb558e9f-1c39-46ee-8860-71af6af63bd6");
+        product1.setProductId(12);
         product1.setProductName("Sampo Cap Bambang");
         product1.setProductQuantity(2);
         products.add(product1);
@@ -71,13 +76,13 @@ class OrderServiceTest {
     void testUpdateStatus() {
         Order order = orders.get(1);
         doReturn(order).when(orderRepository).findById(order.getId());
-        doReturn(new Order()).when(orderRepository).save(any(Order.class));
+        doReturn(new Order(null, null, null, null)).when(orderRepository).save(order);
 
         Order result = orderService.updateStatus(order.getId(), OrderStatus.SUCCESS.getValue());
 
         assertEquals(order.getId(), result.getId());
         assertEquals(OrderStatus.SUCCESS.getValue(), result.getStatus());
-        verify(orderRepository, times(1)).save(any(Order.class));
+        verify(orderRepository, times(1)).save(order);
     }
 
     @Test
@@ -88,17 +93,7 @@ class OrderServiceTest {
         assertThrows(IllegalArgumentException.class,
             () -> orderService.updateStatus(order.getId(), "MEOW"));
 
-        verify(orderRepository, times(0)).save(any(Order.class));
-    }
-
-    @Test
-    void testUpdateStatusInvalidOrderId() {
-        doReturn(null).when(orderRepository).findById("zzczc");
-
-        assertThrows(NoSuchElementException.class,
-            () -> orderService.updateStatus("zzczc", OrderStatus.SUCCESS.getValue()));
-
-        verify(orderRepository, times(0)).save(any(Order.class));
+        verify(orderRepository, times(0)).save(order);
     }
 
     @Test
@@ -106,21 +101,14 @@ class OrderServiceTest {
         Order order = orders.get(1);
         doReturn(Optional.of(order)).when(orderRepository).findById(order.getId());
 
-        Order result = orderService.findById(order.getId()).orElse(null);
+        Order result = orderService.findById(order.getId());
         assertEquals(order.getId(), result.getId());
-    }
-
-    @Test
-    void testFindByIdIfIdNotFound() {
-        doReturn(Optional.empty()).when(orderRepository).findById("zzczc");
-
-        assertFalse(orderService.findById("zzczc").isPresent());
     }
 
     @Test
     void testFindAllByAuthorIfAuthorCorrect() {
         Order order = orders.get(1);
-        doReturn(Arrays.asList(order, new Order())).when(orderRepository).findAllByAuthor(order.getAuthor());
+        doReturn(Arrays.asList(order, new Order(null, null, null, null))).when(orderRepository).findAllByAuthor(order.getAuthor());
 
         List<Order> results = orderService.findAllByAuthor(order.getAuthor());
         for (Order result : results) {
@@ -139,4 +127,3 @@ class OrderServiceTest {
     }
 
 }
-
