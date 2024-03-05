@@ -1,23 +1,23 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.InjectMocks;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.repository.payment.PaymentRepository;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
 
 public class PaymentRepositoryTest {
 
@@ -32,7 +32,7 @@ public class PaymentRepositoryTest {
     @Test
     public void testSavePayment() {
         // Arrange
-        Payment payment = new Payment();
+        Payment payment = new Payment(null, null, null, null);
         when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
 
         // Act
@@ -41,23 +41,6 @@ public class PaymentRepositoryTest {
         // Assert
         assertNotNull(result);
         verify(paymentRepository).save(payment);
-    }
-
-    @Test
-    public void testFindPaymentById() {
-        // Arrange
-        Payment payment = new Payment("1", "Voucher", "PENDING", new HashMap<>());
-        when(paymentRepository.findById("1")).thenReturn(Optional.of(payment));
-
-        // Act
-        Payment result = paymentRepository.findById("1");
-
-        // Assert
-        assertTrue(result.isPresent());
-        assertEquals(payment.getId(), result.get().getId());
-        assertEquals(payment.getMethod(), result.get().getMethod());
-        assertEquals(payment.getStatus(), result.get().getStatus());
-        assertEquals(payment.getPaymentData(), result.get().getPaymentData());
     }
 
     @Test
@@ -78,5 +61,32 @@ public class PaymentRepositoryTest {
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals(payments, result);
+    }
+
+    @Test
+    public void testFindPaymentById() {
+        // Arrange
+        Payment payment1 = new Payment("1", "Voucher", "PENDING", null);
+        Payment payment2 = new Payment("2", "Cash on Delivery", "SUCCESS", null);
+        List<Payment> payments = new ArrayList<>();
+        payments.add(payment1);
+        payments.add(payment2);
+
+        // Stubbing the findById method
+        when(paymentRepository.findById("1")).thenReturn(payment1);
+        when(paymentRepository.findById("2")).thenReturn(payment2);
+        when(paymentRepository.findById("3")).thenReturn(null); // Non-existent payment
+
+        // Act
+        Payment result1 = paymentRepository.findById("1");
+        Payment result2 = paymentRepository.findById("2");
+        Payment result3 = paymentRepository.findById("3");
+
+        // Assert
+        assertNotNull(result1);
+        assertNotNull(result2);
+        assertNull(result3); // Payment with ID "3" does not exist
+        assertEquals("Voucher", result1.getMethod());
+        assertEquals("Cash on Delivery", result2.getMethod());
     }
 }

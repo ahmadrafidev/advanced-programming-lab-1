@@ -1,7 +1,18 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -11,15 +22,6 @@ import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.repository.order.OrderRepository;
 import id.ac.ui.cs.advprog.eshop.repository.payment.PaymentRepository;
 import id.ac.ui.cs.advprog.eshop.service.payment.PaymentServiceImpl;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 public class PaymentServiceImplTest {
 
@@ -40,7 +42,7 @@ public class PaymentServiceImplTest {
     @Test
     public void testAddPayment() {
         // Arrange
-        Order order = new Order();
+        Order order = new Order(null, null, null, null);
         Map<String, String> paymentData = new HashMap<>();
         Payment payment = new Payment("1", "Voucher", "PENDING", paymentData);
 
@@ -63,7 +65,6 @@ public class PaymentServiceImplTest {
         // Arrange
         Payment payment = new Payment("1", "Voucher", "PENDING", new HashMap<>());
 
-        when(paymentRepository.findById(any(String.class))).thenReturn(Optional.of(payment));
         when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
 
         // Act
@@ -79,7 +80,7 @@ public class PaymentServiceImplTest {
         // Arrange
         Payment payment = new Payment("1", "Voucher", "PENDING", new HashMap<>());
 
-        when(paymentRepository.findById(any(String.class))).thenReturn(Optional.of(payment));
+        when(paymentRepository.findById("1")).thenReturn(payment);
 
         // Act
         Payment result = paymentService.getPayment("1");
@@ -112,4 +113,3 @@ public class PaymentServiceImplTest {
         assertEquals(payments, result);
     }
 }
-
