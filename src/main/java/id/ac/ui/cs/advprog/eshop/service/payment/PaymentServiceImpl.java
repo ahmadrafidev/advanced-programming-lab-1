@@ -2,6 +2,8 @@ package id.ac.ui.cs.advprog.eshop.service.payment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.repository.order.OrderRepository;
 import id.ac.ui.cs.advprog.eshop.repository.payment.PaymentRepository;
@@ -28,13 +30,13 @@ public class PaymentServiceImpl implements PaymentService {
             throw new IllegalArgumentException("Order must have at least one product.");
         }
 
-        Payment payment = new Payment();
+        Payment payment = new Payment(method, method, method, paymentData);
+        payment.setOrder(order);
         payment.setMethod(method);
         payment.setStatus("PENDING");
         payment.setPaymentData(paymentData);
 
-        Payment savedPayment = paymentRepository.save(payment);
-        return savedPayment;
+        return paymentRepository.save(payment);
     }
 
     @Override
@@ -47,20 +49,21 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.save(payment);
 
         // Update related order status
-        Optional<Order> optionalOrder = orderRepository.findByPaymentId(payment.getId());
-        optionalOrder.ifPresent(order -> {
-            order.setStatus(status.equals("SUCCESS") ? OrderStatus.SUCCESS : OrderStatus.FAILED);
+        Order order = orderRepository.findById(payment.getId());
+        if (order != null) {
+            order.setStatus(status.equals(OrderStatus.SUCCESS) ? OrderStatus.SUCCESS : OrderStatus.FAILED);
             orderRepository.save(order);
-        });
+        }
 
         return payment;
     }
 
     @Override
     public Payment getPayment(String paymentId) {
-        Optional<Payment> optionalPayment = paymentRepository.findById(paymentId);
-        return optionalPayment.orElse(null);
+        Payment getPaymentById = paymentRepository.findById(paymentId);
+        return getPaymentById;
     }
+
 
     @Override
     public List<Payment> getAllPayments() {

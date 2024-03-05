@@ -7,6 +7,7 @@ public class Payment {
     private String method;
     private String status;
     private Map<String, String> paymentData;
+    private Order order;
 
     // Constructor
     public Payment(String id, String method, String status, Map<String, String> paymentData) {
@@ -48,5 +49,13 @@ public class Payment {
 
     public void setPaymentData(Map<String, String> paymentData) {
         this.paymentData = paymentData;
+    }
+    
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }
